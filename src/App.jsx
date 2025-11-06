@@ -13,20 +13,18 @@ import RegisterPage from './pages/RegisterPage';
 import MyBookingsPage from './pages/MyBookingsPage';
 import AddCarPage from './pages/AddCarPage';
 import CarDetailPage from './pages/CarDetailPage';
+import NotFoundPage from './pages/NotFoundPage'; // Import NotFoundPage
 import PrivateRoute from './components/PrivateRoute';
 import './index.css';
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-gray-50">
         <Navbar />
-        <main className="flex-grow">
+        <main className="flex-grow container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<HomePage />} />
-import CarDetailPage from './pages/CarDetailPage';
-
-            <Route path="/cars/:carId" element={<CarDetailPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/cars/:carId" element={<CarDetailPage />} />
@@ -37,6 +35,8 @@ import CarDetailPage from './pages/CarDetailPage';
               <Route path="/add-car" element={<AddCarPage />} />
             </Route>
 
+            {/* 404 Not Found Route */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />

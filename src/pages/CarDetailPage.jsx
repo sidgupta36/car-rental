@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCarById, bookCar } from '../api';
+import { motion } from 'framer-motion';
 
 const CarDetailPage = () => {
   const [car, setCar] = useState(null);
@@ -49,28 +50,38 @@ const CarDetailPage = () => {
     }
   };
 
-  if (!car) return <div>Loading...</div>;
+  if (!car) return <div className="flex justify-center items-center h-screen"><div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-indigo-500"></div></div>;
 
   return (
     <div className="container mx-auto p-4">
       {error && <p className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</p>}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <img src={`http://localhost:5000/${car.imageUrl}`} alt={`${car.make} ${car.model}`} className="w-full rounded-lg shadow-lg" />
-        </div>
-        <div>
-          <h1 className="text-4xl font-bold mb-4">{car.make} {car.model}</h1>
-          <p className="text-lg text-gray-600 mb-2">Year: {car.year}</p>
-          <p className="text-2xl font-semibold mb-4">${car.pricePerDay}/day</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <motion.div initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+          <img src={`http://localhost:5000/${car.imageUrl}`} alt={`${car.make} ${car.model}`} className="w-full rounded-lg shadow-2xl" />
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+          <h1 className="text-5xl font-extrabold text-gray-800 mb-4">{car.make} {car.model}</h1>
+          <p className="text-xl text-gray-600 mb-6">Year: {car.year}</p>
+          <p className="text-3xl font-bold text-indigo-600 mb-8">${car.pricePerDay}/day</p>
           
-          <form onSubmit={handleBooking} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h3 className="text-xl font-bold mb-4">Book this Car</h3>
+          <div className="bg-gray-100 p-6 rounded-lg mb-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Features</h3>
+            <ul className="grid grid-cols-2 gap-4 text-gray-700">
+              <li><span className="font-semibold">Make:</span> {car.make}</li>
+              <li><span className="font-semibold">Model:</span> {car.model}</li>
+              <li><span className="font-semibold">Year:</span> {car.year}</li>
+              <li><span className="font-semibold">Price:</span> ${car.pricePerDay}/day</li>
+            </ul>
+          </div>
+
+          <form onSubmit={handleBooking} className="bg-white shadow-lg rounded-lg p-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Book this Car</h3>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bookingDate">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="bookingDate">
                 Booking Date
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 id="bookingDate"
                 type="date"
                 value={bookingDate}
@@ -79,11 +90,11 @@ const CarDetailPage = () => {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="returnDate">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="returnDate">
                 Return Date
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 id="returnDate"
                 type="date"
                 value={returnDate}
@@ -91,14 +102,16 @@ const CarDetailPage = () => {
                 required
               />
             </div>
-            <button
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline shadow-lg"
               type="submit"
             >
               Confirm Booking
-            </button>
+            </motion.button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
